@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
 
 typedef struct _sNode SNode;
 typedef struct _linkedList LinkedList;
@@ -10,6 +11,7 @@ LinkedList* LinkedList_create();
 void LinkedList_add_first(LinkedList* L, int val);
 void LinkedList_add_last(LinkedList* L, int val);
 void LinkedList_print(const LinkedList* L);
+bool LinkedList_is_empty(const LinkedList* L);
 
 
 struct _sNode
@@ -21,6 +23,7 @@ struct _sNode
 struct _linkedList
 {
     SNode* begin;
+    SNode* end;
 };
 
 SNode* SNode_create(int val) {
@@ -36,9 +39,20 @@ LinkedList* LinkedList_create() {
     L->begin = (SNode*)NULL;
 }
 
+// void LinkedList_add_first(LinkedList* L, int val) {
+//     SNode* p = SNode_create(val);
+//     p->next = L->begin;
+//     L->begin = p;
+// }
+
 void LinkedList_add_first(LinkedList* L, int val) {
     SNode* p = SNode_create(val);
     p->next = L->begin;
+    
+    if (LinkedList_is_empty(L)) {
+        L->end = p;
+    }
+
     L->begin = p;
 }
 
@@ -55,7 +69,7 @@ void LinkedList_print(const LinkedList* L) {
 
 void LinkedList_add_last(LinkedList* L, int val) {
     SNode* q = SNode_create(val);
-    if (L->begin == NULL) {
+    if (LinkedList_is_empty(L)) {
         L->begin = q;
     }
     else {
@@ -70,10 +84,14 @@ void LinkedList_add_last(LinkedList* L, int val) {
     }
 }
 
+bool LinkedList_is_empty(const LinkedList* L) {
+    return (L->begin == NULL && L->end == NULL);
+}
+
 int main() {
     LinkedList* L = LinkedList_create();
 
-/*
+
     LinkedList_add_first(L, 5);
         LinkedList_print(L);
         puts("");
@@ -85,14 +103,16 @@ int main() {
         puts("");
     LinkedList_add_first(L, 10);
         LinkedList_print(L);
-*/
 
-    LinkedList_add_last(L, 10); 
-    LinkedList_add_last(L, 2);
-    LinkedList_add_last(L, 4);
-    LinkedList_add_last(L, 5);
-    LinkedList_add_last(L, 7);
-    LinkedList_print(L);
+
+    // LinkedList_add_last(L, 10); 
+    // LinkedList_add_last(L, 2);
+    // LinkedList_add_last(L, 4);
+    // LinkedList_add_last(L, 5);
+    // LinkedList_add_last(L, 7);
+    // LinkedList_print(L);
+
+
 
     return 0;
 }
